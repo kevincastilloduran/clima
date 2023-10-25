@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pronóstico del Clima</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Pronóstico del Clima</h1>
+
+    <div id="weather-info" class="weather-container"></div>
+
+    <script>
+        const apiKey = "9olsjCmNgYE2yZJ2QWKk86GJGjqXMvJG";
+        const cityKey = "1068637"; 
+        
+        fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=Ciudad%20del%20carmen&language=Es`)
+            .then(response => response.json())
+            .then(data => {
+                const cityKey = data[0].Key;
+
+                return fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=${apiKey}&language=Es&metric=True`);
+            })
+            .then(response => response.json())
+            .then(data => {
+                const weatherInfo = document.getElementById("weather-info");
+
+                weatherInfo.innerHTML = "<h2 class='city-name'>Ciudad del Carmen:</h2>";
+
+                data.DailyForecasts.forEach(forecast => {
+                    const date = new Date(forecast.Date);
+                    const day = date.toLocaleDateString("es-ES", {weekday: "long" });
+                    const maxTemperature = forecast.Temperature.Maximum.Value;
+                    const minTemperature = forecast.Temperature.Minimum.Value;
+                    const description = forecast.Day.IconPhrase;
+
+                    weatherInfo.innerHTML += `<div class='weather-day'>
+                        <p>${day}:${description}</p>
+                        <p>Temperatura Máxima: ${maxTemperature}°C</p>
+                        <p>Temperatura Mínima: ${minTemperature}°C</p>
+                    </div>`;
+                });
+            })
+            .catch(error => {
+                console.error("Error al obtener el pronóstico del clima:", error);
+            });
+    </script>
+</body>
+</html>
+

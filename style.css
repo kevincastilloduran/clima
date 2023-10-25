@@ -1,0 +1,24 @@
+h1{
+    color:blue;
+}
+h2{
+    color:green;
+}
+.weather-container {
+    text-align: center;
+}
+
+.city-name {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.weather-day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+    background-color:azure;
+}
